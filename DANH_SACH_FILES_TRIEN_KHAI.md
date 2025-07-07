@@ -34,12 +34,25 @@
 |------|-------|
 | `convert-vietnamese-no-diacritics.sh` | Chuyen doi tieng Viet khong dau |
 | `setup-deployment.sh` | Setup ban dau |
+| `cleanup-old-installation.sh` | **Xoa cai dat cu hoan toan** |
+| `full-clean-deploy.sh` | **Don dep + cai dat moi** |
+| `emergency-cleanup.sh` | **Xoa khau cap nhanh** |
 
 ## 🌟 KHUYẾN NGHỊ SỬ DỤNG
 
 ### Deploy Nhanh Nhất (1 Lệnh)
 ```bash
 curl -sSL https://raw.githubusercontent.com/doctruyenai/OnlineChatSystem/main/deploy-from-github-fixed.sh | bash
+```
+
+### Don Dep + Deploy Moi (1 Lệnh)
+```bash
+curl -sSL https://raw.githubusercontent.com/doctruyenai/OnlineChatSystem/main/full-clean-deploy.sh | bash
+```
+
+### Xoa Cai Dat Cu (1 Lệnh)
+```bash
+curl -sSL https://raw.githubusercontent.com/doctruyenai/OnlineChatSystem/main/cleanup-old-installation.sh | bash
 ```
 
 ### Deploy Từ Local
