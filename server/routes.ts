@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
+import path from "path";
 import { setupAuth } from "./auth";
 import { storage } from "./storage";
 import { setupSocketHandlers } from "./socket";
@@ -74,6 +75,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error("Error updating conversation:", error);
       res.status(500).json({ message: "Failed to update conversation" });
     }
+  });
+
+  // Widget static files
+  app.get("/widget.js", (req, res) => {
+    res.setHeader("Content-Type", "application/javascript");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.sendFile(path.join(process.cwd(), "public", "widget.js"));
+  });
+
+  app.get("/widget.css", (req, res) => {
+    res.setHeader("Content-Type", "text/css");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.sendFile(path.join(process.cwd(), "public", "widget.css"));
   });
 
   // Widget API routes

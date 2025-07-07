@@ -116,17 +116,36 @@ The application uses four main entities:
 - **start**: Runs production server from built files
 - **db:push**: Applies schema changes to database
 
+### Production Deployment (Ubuntu 20.04 VPS)
+- **Process Manager**: PM2 with cluster mode for high availability
+- **Web Server**: Nginx as reverse proxy with SSL/TLS support
+- **Database**: PostgreSQL 14+ with optimized configuration
+- **Security**: UFW firewall, SSL certificates via Let's Encrypt
+- **Monitoring**: PM2 logs, Nginx access/error logs
+- **Auto-restart**: PM2 handles application crashes and restarts
+
+### Widget Integration
+- **Embeddable Widget**: JavaScript widget available at `/widget.js` and `/widget.css`
+- **CORS Support**: Cross-origin requests enabled for widget integration
+- **Configuration**: Widget behavior customizable via LiveChatConfig object
+- **Real-time**: WebSocket connection for instant messaging
+
 ### Production Considerations
 - Database migrations should be run before deployment
 - Session secret must be consistent across restarts
 - WebSocket connections require sticky sessions in load-balanced environments
 - Static files served from `dist/public` in production
+- Widget files served with CORS headers for cross-domain integration
 
 ## Changelog
 
 ```
 Changelog:
-- July 07, 2025. Initial setup
+- July 07, 2025. Initial setup with complete chat system
+- July 07, 2025. Added widget configuration page with Vietnamese interface
+- July 07, 2025. Created comprehensive VPS deployment guide for Ubuntu 20.04
+- July 07, 2025. Added embeddable widget files (widget.js, widget.css)
+- July 07, 2025. Configured PM2 ecosystem and production deployment files
 ```
 
 ## User Preferences
