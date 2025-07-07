@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # ==============================================================================
-# HƯỚNG DẪN NHANH DEPLOY - 5 PHÚT
-# Script hướng dẫn deploy nhanh cho người dùng
+# HUONG DAN NHANH DEPLOY - 5 PHUT
+# Script huong dan deploy nhanh cho nguoi dung
 # ==============================================================================
 
-# Màu sắc
+# Mau sac
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -14,50 +14,50 @@ NC='\033[0m'
 
 echo -e "${BLUE}"
 echo "============================================================================"
-echo "                    HƯỚNG DẪN DEPLOY NHANH - 5 BƯỚC"
+echo "                    HUONG DAN DEPLOY NHANH - 5 BUOC"
 echo "============================================================================"
 echo -e "${NC}"
 
-echo -e "\n${GREEN}BƯỚC 1: CHUẨN BỊ THÔNG TIN${NC}"
-echo "Trước khi bắt đầu, hãy chuẩn bị:"
-echo "• Domain name đã trỏ về IP VPS (ví dụ: chat.yoursite.com)"
-echo "• Email để đăng ký SSL certificate"
-echo "• Mật khẩu database mạnh (ít nhất 12 ký tự)"
-echo "• Session secret (ít nhất 32 ký tự ngẫu nhiên)"
+echo -e "\n${GREEN}BUOC 1: CHUAN BI THONG TIN${NC}"
+echo "Truoc khi bat dau, hay chuan bi:"
+echo "• Domain name da tro ve IP VPS (vi du: chat.yoursite.com)"
+echo "• Email de dang ky SSL certificate"
+echo "• Mat khau database manh (it nhat 12 ky tu)"
+echo "• Session secret (it nhat 32 ky tu ngau nhien)"
 
-echo -e "\n${GREEN}BƯỚC 2: KIỂM TRA HỆ THỐNG${NC}"
-echo "Chạy lệnh sau để kiểm tra VPS có đủ yêu cầu:"
+echo -e "\n${GREEN}BUOC 2: KIEM TRA HE THONG${NC}"
+echo "Chay lenh sau de kiem tra VPS co du yeu cau:"
 echo -e "${YELLOW}./check-requirements.sh${NC}"
 
-echo -e "\n${GREEN}BƯỚC 3: (TÙY CHỌN) TÙYI CHỈNH CẤU HÌNH${NC}"
-echo "Nếu muốn thay đổi cấu hình mặc định:"
-echo -e "${YELLOW}nano deployment.config.sh${NC}      # Chỉnh sửa"
-echo -e "${YELLOW}./deployment.config.sh show${NC}     # Xem cấu hình"
+echo -e "\n${GREEN}BUOC 3: (TUY CHON) TUYI CHINH CAU HINH${NC}"
+echo "Neu muon thay doi cau hinh mac dinh:"
+echo -e "${YELLOW}nano deployment.config.sh${NC}      # Chinh sua"
+echo -e "${YELLOW}./deployment.config.sh show${NC}     # Xem cau hinh"
 
-echo -e "\n${GREEN}BƯỚC 4: CHẠY DEPLOY${NC}"
-echo "Chạy lệnh triển khai chính:"
+echo -e "\n${GREEN}BUOC 4: CHAY DEPLOY${NC}"
+echo "Chay lenh trien khai chinh:"
 echo -e "${YELLOW}./deploy-all-in-one.sh${NC}"
 echo ""
-echo "Script sẽ hỏi các thông tin cần thiết và tự động cài đặt."
-echo "Thời gian: 20-35 phút"
+echo "Script se hoi cac thong tin can thiet va tu dong cai dat."
+echo "Thoi gian: 20-35 phut"
 
-echo -e "\n${GREEN}BƯỚC 5: KIỂM TRA KẾT QUẢ${NC}"
-echo "Sau khi hoàn thành, truy cập:"
+echo -e "\n${GREEN}BUOC 5: KIEM TRA KET QUA${NC}"
+echo "Sau khi hoan thanh, truy cap:"
 echo "• Website: https://yourdomain.com"
 echo "• Admin: https://yourdomain.com/auth"
-echo "• Đăng nhập: admin/admin123 (ĐỔI MẬT KHẨU NGAY!)"
+echo "• Dang nhap: admin/admin123 (DOI MAT KHAU NGAY!)"
 
-echo -e "\n${BLUE}LỆNH NHANH:${NC}"
+echo -e "\n${BLUE}LENH NHANH:${NC}"
 echo -e "${YELLOW}./check-requirements.sh && ./deploy-all-in-one.sh${NC}"
 
-echo -e "\n${RED}LƯU Ý QUAN TRỌNG:${NC}"
-echo "• Domain PHẢI trỏ về IP VPS trước khi chạy"
-echo "• Đổi mật khẩu admin ngay sau khi deploy"
-echo "• Backup database thường xuyên"
+echo -e "\n${RED}LUU Y QUAN TRONG:${NC}"
+echo "• Domain PHAI tro ve IP VPS truoc khi chay"
+echo "• Doi mat khau admin ngay sau khi deploy"
+echo "• Backup database thuong xuyen"
 
-echo -e "\n${BLUE}HỖ TRỢ:${NC}"
-echo "• Hướng dẫn chi tiết: HUONG_DAN_SU_DUNG_DEPLOY.md"
-echo "• Xem logs lỗi: tail -f deploy.log"
-echo "• Kiểm tra status: sudo systemctl status nginx postgresql"
+echo -e "\n${BLUE}HO TRO:${NC}"
+echo "• Huong dan chi tiet: HUONG_DAN_SU_DUNG_DEPLOY.md"
+echo "• Xem logs loi: tail -f deploy.log"
+echo "• Kiem tra status: sudo systemctl status nginx postgresql"
 
-echo -e "\n${GREEN}Sẵn sàng deploy? Chạy: ${YELLOW}./deploy-all-in-one.sh${NC}"
+echo -e "\n${GREEN}San sang deploy? Chay: ${YELLOW}./deploy-all-in-one.sh${NC}"

@@ -1,54 +1,54 @@
-# TÓM TẮT HƯỚNG DẪN DEPLOYMENT
+# TOM TAT HUONG DAN DEPLOYMENT
 
-## 🚀 Deploy Nhanh Nhất (Từ GitHub)
+## 🚀 Deploy Nhanh Nhat (Tu GitHub)
 
 ```bash
-# Deploy trực tiếp từ GitHub repository (1 lệnh)
+# Deploy truc tiep tu GitHub repository (1 lenh)
 curl -sSL https://raw.githubusercontent.com/doctruyenai/OnlineChatSystem/main/deploy-from-github.sh | bash
 ```
 
-## 📋 Hoặc Deploy Từ Local
+## 📋 Hoac Deploy Tu Local
 
 ```bash
-# Bước 1: Kiểm tra files
+# Buoc 1: Kiem tra files
 ./check-deploy-files.sh
 
-# Bước 2: Kiểm tra VPS
+# Buoc 2: Kiem tra VPS
 ./check-requirements.sh
 
-# Bước 3: Deploy ngay
+# Buoc 3: Deploy ngay
 ./deploy-all-in-one.sh
 ```
 
-## 📋 Checklist Trước Khi Deploy
+## 📋 Checklist Truoc Khi Deploy
 
-### ✅ Chuẩn Bị VPS
+### ✅ Chuan Bi VPS
 - [ ] Ubuntu 20.04 LTS
 - [ ] RAM >= 2GB, SSD >= 20GB
-- [ ] Quyền sudo
-- [ ] Kết nối internet ổn định
+- [ ] Quyen sudo
+- [ ] Ket noi internet on dinh
 
-### ✅ Chuẩn Bị Domain
-- [ ] Domain đã mua (ví dụ: `chat.yoursite.com`)
-- [ ] DNS Record A trỏ về IP VPS
-- [ ] Đợi 5-10 phút để DNS propagate
+### ✅ Chuan Bi Domain
+- [ ] Domain da mua (vi du: `chat.yoursite.com`)
+- [ ] DNS Record A tro ve IP VPS
+- [ ] Doi 5-10 phut de DNS propagate
 
-### ✅ Chuẩn Bị Thông Tin
-- [ ] Email để đăng ký SSL (ví dụ: `admin@yoursite.com`)
-- [ ] Database password mạnh (ít nhất 12 ký tự)
-- [ ] Session secret (ít nhất 32 ký tự ngẫu nhiên)
+### ✅ Chuan Bi Thong Tin
+- [ ] Email de dang ky SSL (vi du: `admin@yoursite.com`)
+- [ ] Database password manh (it nhat 12 ky tu)
+- [ ] Session secret (it nhat 32 ky tu ngau nhien)
 
-## 🔥 2 Phương Pháp Deploy
+## 🔥 2 Phuong Phap Deploy
 
-### 🌟 Phương Pháp 1: Deploy Từ GitHub (Khuyến Nghị)
+### 🌟 Phuong Phap 1: Deploy Tu GitHub (Khuyen Nghi)
 ```bash
-# Chỉ cần 1 lệnh trên VPS
+# Chi can 1 lenh tren VPS
 curl -sSL https://raw.githubusercontent.com/doctruyenai/OnlineChatSystem/main/deploy-from-github.sh | bash
 ```
 
-### 📁 Phương Pháp 2: Deploy Từ Local
+### 📁 Phuong Phap 2: Deploy Tu Local
 ```bash
-# Upload files lên VPS
+# Upload files len VPS
 scp -r . user@vps-ip:/home/user/chat-system/
 ssh user@vps-ip
 cd chat-system
@@ -57,48 +57,48 @@ cd chat-system
 chmod +x *.sh && ./deploy-all-in-one.sh
 ```
 
-## 📖 Hướng Dẫn Chi Tiết
+## 📖 Huong Dan Chi Tiet
 
-| File | Mục Đích |
+| File | Muc Dich |
 |------|----------|
-| `deploy-from-github.sh` | **Deploy trực tiếp từ GitHub** |
-| `deploy-all-in-one.sh` | Script deploy chính |
-| `quick-deploy-guide.sh` | Hướng dẫn 5 bước nhanh |
-| `HUONG_DAN_SU_DUNG_DEPLOY.md` | Hướng dẫn chi tiết đầy đủ |
-| `HUONG_DAN_DEPLOY_TU_GITHUB.md` | **Hướng dẫn deploy từ GitHub** |
-| `check-deploy-files.sh` | Kiểm tra files đầy đủ |
-| `check-requirements.sh` | Kiểm tra VPS đủ yêu cầu |
-| `deployment.config.sh` | Cấu hình có thể tùy chỉnh |
+| `deploy-from-github.sh` | **Deploy truc tiep tu GitHub** |
+| `deploy-all-in-one.sh` | Script deploy chinh |
+| `quick-deploy-guide.sh` | Huong dan 5 buoc nhanh |
+| `HUONG_DAN_SU_DUNG_DEPLOY.md` | Huong dan chi tiet day du |
+| `HUONG_DAN_DEPLOY_TU_GITHUB.md` | **Huong dan deploy tu GitHub** |
+| `check-deploy-files.sh` | Kiem tra files day du |
+| `check-requirements.sh` | Kiem tra VPS du yeu cau |
+| `deployment.config.sh` | Cau hinh co the tuy chinh |
 
-## ⚡ Quá Trình Deploy
+## ⚡ Qua Trinh Deploy
 
-1. **Thu thập thông tin** (2 phút)
-2. **Cài đặt hệ thống** (20-30 phút)
-3. **Cấu hình SSL** (2-3 phút)
-4. **Hoàn thành** ✅
+1. **Thu thap thong tin** (2 phut)
+2. **Cai dat he thong** (20-30 phut)
+3. **Cau hinh SSL** (2-3 phut)
+4. **Hoan thanh** ✅
 
-**Tổng thời gian: 25-35 phút**
+**Tong thoi gian: 25-35 phut**
 
-## 🎯 Kết Quả Sau Deploy
+## 🎯 Ket Qua Sau Deploy
 
-### Truy Cập Website
-- **Trang chủ**: `https://yourdomain.com`
+### Truy Cap Website
+- **Trang chu**: `https://yourdomain.com`
 - **Admin login**: `https://yourdomain.com/auth`
 - **Demo widget**: `https://yourdomain.com/widget-demo`
 
-### Thông Tin Đăng Nhập Mặc Định
+### Thong Tin Dang Nhap Mac Dinh
 ```
 Username: admin
 Password: admin123
 ```
-**⚠️ QUAN TRỌNG: Đổi mật khẩu ngay sau khi đăng nhập!**
+**⚠️ QUAN TRONG: Doi mat khau ngay sau khi dang nhap!**
 
 ### Widget Integration
-Thêm vào website khách hàng:
+Them vao website khach hang:
 ```html
 <script>
 window.LiveChatConfig = {
-  title: 'Hỗ Trợ Khách Hàng',
+  title: 'Ho Tro Khach Hang',
   primaryColor: '#3b82f6',
   position: 'bottom-right'
 };
@@ -107,10 +107,10 @@ window.LiveChatConfig = {
 <link rel="stylesheet" href="https://yourdomain.com/widget.css">
 ```
 
-## 🛠️ Scripts Quản Lý Hữu Ích
+## 🛠️ Scripts Quan Ly Huu Ich
 
 ```bash
-# Kiểm tra trạng thái
+# Kiem tra trang thai
 sudo systemctl status nginx postgresql
 pm2 status chatapp
 
@@ -118,57 +118,57 @@ pm2 status chatapp
 pm2 logs chatapp
 sudo journalctl -u nginx -f
 
-# Restart dịch vụ
+# Restart dich vu
 pm2 restart chatapp
 sudo systemctl restart nginx
 
 # Backup database
 /usr/local/bin/backup-chatapp-db.sh
 
-# Cập nhật SSL certificate
+# Cap nhat SSL certificate
 sudo certbot renew
 ```
 
 ## 🔧 Troubleshooting Nhanh
 
-### Domain chưa trỏ đúng
+### Domain chua tro dung
 ```bash
-# Kiểm tra DNS
+# Kiem tra DNS
 nslookup yourdomain.com
 dig yourdomain.com A
 ```
 
-### SSL certificate lỗi
+### SSL certificate loi
 ```bash
-# Tạo lại SSL
+# Tao lai SSL
 sudo certbot --nginx -d yourdomain.com --force-renewal
 ```
 
-### Database không kết nối được
+### Database khong ket noi duoc
 ```bash
-# Kiểm tra PostgreSQL
+# Kiem tra PostgreSQL
 sudo systemctl status postgresql
 sudo -u postgres psql -l
 ```
 
-### Ứng dụng không chạy
+### Ung dung khong chay
 ```bash
-# Kiểm tra PM2
+# Kiem tra PM2
 pm2 status
 pm2 restart chatapp
 pm2 logs chatapp --lines 50
 ```
 
-## 📞 Hỗ Trợ
+## 📞 Ho Tro
 
-Nếu gặp vấn đề:
-1. Kiểm tra logs: `pm2 logs chatapp`
+Neu gap van de:
+1. Kiem tra logs: `pm2 logs chatapp`
 2. Xem file log: `tail -f deploy.log`
-3. Kiểm tra status: `sudo systemctl status nginx postgresql`
+3. Kiem tra status: `sudo systemctl status nginx postgresql`
 
-## ⚠️ Lưu Ý Bảo Mật
+## ⚠️ Luu Y Bao Mat
 
-- **Đổi mật khẩu admin** ngay sau deploy
-- **Backup database** thường xuyên (tự động hàng ngày)
-- **Update hệ thống** định kỳ
-- **Không chia sẻ** database password và session secret
+- **Doi mat khau admin** ngay sau deploy
+- **Backup database** thuong xuyen (tu dong hang ngay)
+- **Update he thong** dinh ky
+- **Khong chia se** database password va session secret

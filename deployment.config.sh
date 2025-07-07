@@ -1,90 +1,90 @@
 #!/bin/bash
 
 # ==============================================================================
-# FILE CẤU HÌNH TRIỂN KHAI - REAL-TIME CHAT SYSTEM
-# Tùy chỉnh các thông số trước khi triển khai
+# FILE CAU HINH TRIEN KHAI - REAL-TIME CHAT SYSTEM
+# Tuy chinh cac thong so truoc khi trien khai
 # ==============================================================================
 
-# Thông tin cơ bản
+# Thong tin co ban
 export APP_NAME="chatapp"
 export APP_USER="chatapp"
 export DB_NAME="chatapp_db"
 export DB_USER="chatapp_user"
 
-# Cấu hình Node.js
+# Cau hinh Node.js
 export NODE_VERSION="20.x"
-export PM2_INSTANCES="max"          # Số instances PM2 (max = số CPU cores)
-export APP_PORT="3000"              # Port ứng dụng
+export PM2_INSTANCES="max"          # So instances PM2 (max = so CPU cores)
+export APP_PORT="3000"              # Port ung dung
 export NODE_ENV="production"
 
-# Cấu hình PostgreSQL
-export POSTGRES_VERSION="14"       # Phiên bản PostgreSQL
+# Cau hinh PostgreSQL
+export POSTGRES_VERSION="14"       # Phien ban PostgreSQL
 export POSTGRES_MAX_CONNECTIONS="100"
 export POSTGRES_SHARED_BUFFERS="256MB"
 export POSTGRES_EFFECTIVE_CACHE_SIZE="1GB"
 
-# Cấu hình Nginx
+# Cau hinh Nginx
 export NGINX_WORKER_PROCESSES="auto"
 export NGINX_WORKER_CONNECTIONS="1024"
 export NGINX_CLIENT_MAX_BODY_SIZE="10M"
 export NGINX_KEEPALIVE_TIMEOUT="65"
 
-# Cấu hình SSL
-export SSL_PROVIDER="letsencrypt"   # letsencrypt hoặc custom
-export SSL_EMAIL=""                 # Sẽ được hỏi trong quá trình cài đặt
+# Cau hinh SSL
+export SSL_PROVIDER="letsencrypt"   # letsencrypt hoac custom
+export SSL_EMAIL=""                 # Se duoc hoi trong qua trinh cai dat
 export SSL_KEY_SIZE="4096"
 
-# Cấu hình Backup
-export BACKUP_RETENTION_DAYS="7"   # Số ngày giữ backup
-export BACKUP_TIME="2"              # Giờ chạy backup (0-23)
-export BACKUP_MINUTE="0"            # Phút chạy backup (0-59)
+# Cau hinh Backup
+export BACKUP_RETENTION_DAYS="7"   # So ngay giu backup
+export BACKUP_TIME="2"              # Gio chay backup (0-23)
+export BACKUP_MINUTE="0"            # Phut chay backup (0-59)
 
-# Cấu hình Security
-export UFW_ENABLE="true"            # Bật firewall
-export SSH_PORT="22"                # Port SSH (mặc định 22)
-export FAIL2BAN_ENABLE="true"       # Bật fail2ban
+# Cau hinh Security
+export UFW_ENABLE="true"            # Bat firewall
+export SSH_PORT="22"                # Port SSH (mac dinh 22)
+export FAIL2BAN_ENABLE="true"       # Bat fail2ban
 
-# Cấu hình Performance
-export ENABLE_GZIP="true"           # Bật gzip compression
-export ENABLE_CACHE="true"          # Bật browser caching
-export MAX_UPLOAD_SIZE="10M"        # Kích thước file upload tối đa
+# Cau hinh Performance
+export ENABLE_GZIP="true"           # Bat gzip compression
+export ENABLE_CACHE="true"          # Bat browser caching
+export MAX_UPLOAD_SIZE="10M"        # Kich thuoc file upload toi da
 
-# Cấu hình Monitoring
-export ENABLE_LOG_ROTATION="true"   # Bật log rotation
-export LOG_MAX_SIZE="100M"          # Kích thước log tối đa
-export LOG_RETENTION_DAYS="30"      # Số ngày giữ log
+# Cau hinh Monitoring
+export ENABLE_LOG_ROTATION="true"   # Bat log rotation
+export LOG_MAX_SIZE="100M"          # Kich thuoc log toi da
+export LOG_RETENTION_DAYS="30"      # So ngay giu log
 
-# Cấu hình Widget
+# Cau hinh Widget
 export WIDGET_DEFAULT_POSITION="bottom-right"
 export WIDGET_DEFAULT_COLOR="#007bff"
-export WIDGET_DEFAULT_TITLE="Hỗ trợ khách hàng"
+export WIDGET_DEFAULT_TITLE="Ho tro khach hang"
 
-# Cấu hình SMTP (tùy chọn)
-export SMTP_ENABLE="false"          # Bật SMTP
+# Cau hinh SMTP (tuy chon)
+export SMTP_ENABLE="false"          # Bat SMTP
 export SMTP_HOST=""                 # SMTP server
 export SMTP_PORT="587"              # SMTP port
-export SMTP_SECURE="false"          # Sử dụng SSL/TLS
+export SMTP_SECURE="false"          # Su dung SSL/TLS
 export SMTP_USER=""                 # SMTP username
 export SMTP_PASS=""                 # SMTP password
 
-# Cấu hình Redis (tùy chọn - cho session store)
-export REDIS_ENABLE="false"         # Bật Redis
+# Cau hinh Redis (tuy chon - cho session store)
+export REDIS_ENABLE="false"         # Bat Redis
 export REDIS_HOST="127.0.0.1"
 export REDIS_PORT="6379"
 export REDIS_PASSWORD=""
 
-# Cấu hình Debug
-export DEBUG_MODE="false"           # Bật debug mode
-export VERBOSE_LOGGING="false"      # Bật verbose logging
+# Cau hinh Debug
+export DEBUG_MODE="false"           # Bat debug mode
+export VERBOSE_LOGGING="false"      # Bat verbose logging
 
-# Advanced Settings (chỉ chỉnh nếu hiểu rõ)
+# Advanced Settings (chi chinh neu hieu ro)
 export NODEJS_MAX_OLD_SPACE_SIZE="2048"  # MB
 export POSTGRES_WORK_MEM="4MB"
 export POSTGRES_MAINTENANCE_WORK_MEM="64MB"
 
-# Hàm hiển thị cấu hình hiện tại
+# Ham hien thi cau hinh hien tai
 show_config() {
-    echo "==================== CẤU HÌNH TRIỂN KHAI ===================="
+    echo "==================== CAU HINH TRIEN KHAI ===================="
     echo "App Name: $APP_NAME"
     echo "App User: $APP_USER"
     echo "App Port: $APP_PORT"
@@ -101,32 +101,32 @@ show_config() {
     echo "=========================================================="
 }
 
-# Hàm validate cấu hình
+# Ham validate cau hinh
 validate_config() {
     local errors=0
     
-    # Kiểm tra port
+    # Kiem tra port
     if ! [[ "$APP_PORT" =~ ^[0-9]+$ ]] || [ "$APP_PORT" -lt 1000 ] || [ "$APP_PORT" -gt 65535 ]; then
-        echo "ERROR: APP_PORT phải là số từ 1000-65535"
+        echo "ERROR: APP_PORT phai la so tu 1000-65535"
         ((errors++))
     fi
     
-    # Kiểm tra backup retention
+    # Kiem tra backup retention
     if ! [[ "$BACKUP_RETENTION_DAYS" =~ ^[0-9]+$ ]] || [ "$BACKUP_RETENTION_DAYS" -lt 1 ]; then
-        echo "ERROR: BACKUP_RETENTION_DAYS phải là số dương"
+        echo "ERROR: BACKUP_RETENTION_DAYS phai la so duong"
         ((errors++))
     fi
     
-    # Kiểm tra backup time
+    # Kiem tra backup time
     if ! [[ "$BACKUP_TIME" =~ ^[0-9]+$ ]] || [ "$BACKUP_TIME" -lt 0 ] || [ "$BACKUP_TIME" -gt 23 ]; then
-        echo "ERROR: BACKUP_TIME phải là số từ 0-23"
+        echo "ERROR: BACKUP_TIME phai la so tu 0-23"
         ((errors++))
     fi
     
     return $errors
 }
 
-# Nếu script được chạy trực tiếp
+# Neu script duoc chay truc tiep
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     case "${1:-}" in
         show)
@@ -134,18 +134,18 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
             ;;
         validate)
             if validate_config; then
-                echo "✓ Cấu hình hợp lệ"
+                echo "✓ Cau hinh hop le"
                 exit 0
             else
-                echo "✗ Cấu hình có lỗi"
+                echo "✗ Cau hinh co loi"
                 exit 1
             fi
             ;;
         *)
-            echo "Sử dụng:"
-            echo "  source deployment.config.sh  # Load cấu hình"
-            echo "  ./deployment.config.sh show  # Hiển thị cấu hình"
-            echo "  ./deployment.config.sh validate  # Kiểm tra cấu hình"
+            echo "Su dung:"
+            echo "  source deployment.config.sh  # Load cau hinh"
+            echo "  ./deployment.config.sh show  # Hien thi cau hinh"
+            echo "  ./deployment.config.sh validate  # Kiem tra cau hinh"
             ;;
     esac
 fi

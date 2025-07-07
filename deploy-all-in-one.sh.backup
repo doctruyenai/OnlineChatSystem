@@ -120,155 +120,155 @@ gather_info() {
     echo -e "${GREEN}✓ Da thu thap thong tin cau hinh${NC}"
 }
 
-# Cap nhat he thong
+# Cập nhật hệ thống
 update_system() {
-    log "Cap nhat he thong..."
+    log "Cập nhật hệ thống..."
     sudo apt update && sudo apt upgrade -y
     sudo apt install -y curl wget git ufw software-properties-common apt-transport-https ca-certificates gnupg lsb-release
 }
 
-# Cai dat Node.js 20.x
+# Cài đặt Node.js 20.x
 install_nodejs() {
-    log "Cai dat Node.js 20.x..."
+    log "Cài đặt Node.js 20.x..."
     
-    # Xoa Node.js cu neu co
+    # Xóa Node.js cũ nếu có
     sudo apt remove -y nodejs npm
     
-    # Them NodeSource repository
+    # Thêm NodeSource repository
     curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
     
-    # Cai dat Node.js
+    # Cài đặt Node.js
     sudo apt-get install -y nodejs
     
-    # Kiem tra phien ban
+    # Kiểm tra phiên bản
     node_version=$(node --version)
     npm_version=$(npm --version)
-    log "Node.js da duoc cai dat: $node_version"
-    log "npm da duoc cai dat: $npm_version"
+    log "Node.js đã được cài đặt: $node_version"
+    log "npm đã được cài đặt: $npm_version"
     
-    # Cai dat PM2
+    # Cài đặt PM2
     sudo npm install -g pm2
-    log "PM2 da duoc cai dat"
+    log "PM2 đã được cài đặt"
 }
 
-# Cai dat PostgreSQL
+# Cài đặt PostgreSQL
 install_postgresql() {
-    log "Cai dat PostgreSQL..."
+    log "Cài đặt PostgreSQL..."
     
     sudo apt install -y postgresql postgresql-contrib
     
-    # Khoi dong va enable PostgreSQL
+    # Khởi động và enable PostgreSQL
     sudo systemctl start postgresql
     sudo systemctl enable postgresql
     
-    log "PostgreSQL da duoc cai dat va khoi dong"
+    log "PostgreSQL đã được cài đặt và khởi động"
 }
 
-# Cau hinh PostgreSQL
+# Cấu hình PostgreSQL
 configure_postgresql() {
-    log "Cau hinh PostgreSQL..."
+    log "Cấu hình PostgreSQL..."
     
-    # Tao database va user
+    # Tạo database và user
     sudo -u postgres psql -c "CREATE DATABASE $DB_NAME;"
     sudo -u postgres psql -c "CREATE USER $DB_USER WITH ENCRYPTED PASSWORD '$DB_PASSWORD';"
     sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
     sudo -u postgres psql -c "ALTER USER $DB_USER CREATEDB;"
     
-    # Cau hinh authentication
+    # Cấu hình authentication
     PG_VERSION=$(sudo -u postgres psql -t -c "SELECT version();" | grep -oP '(?<=PostgreSQL )\d+')
     PG_CONFIG_DIR="/etc/postgresql/$PG_VERSION/main"
     
-    # Backup cau hinh cu
+    # Backup cấu hình cũ
     sudo cp "$PG_CONFIG_DIR/pg_hba.conf" "$PG_CONFIG_DIR/pg_hba.conf.backup"
     
-    # Them cau hinh authentication cho user moi
+    # Thêm cấu hình authentication cho user mới
     echo "local   $DB_NAME        $DB_USER                                md5" | sudo tee -a "$PG_CONFIG_DIR/pg_hba.conf"
     
     # Restart PostgreSQL
     sudo systemctl restart postgresql
     
-    log "PostgreSQL da duoc cau hinh"
+    log "PostgreSQL đã được cấu hình"
 }
 
-# Cai dat Nginx
+# Cài đặt Nginx
 install_nginx() {
-    log "Cai dat Nginx..."
+    log "Cài đặt Nginx..."
     
     sudo apt install -y nginx
     sudo systemctl start nginx
     sudo systemctl enable nginx
     
-    log "Nginx da duoc cai dat va khoi dong"
+    log "Nginx đã được cài đặt và khởi động"
 }
 
-# Tao user cho ung dung
+# Tạo user cho ứng dụng
 create_app_user() {
-    log "Tao user cho ung dung..."
+    log "Tạo user cho ứng dụng..."
     
     if ! id "$APP_USER" &>/dev/null; then
         sudo adduser --disabled-password --gecos "" $APP_USER
         sudo usermod -aG sudo $APP_USER
-        log "User $APP_USER da duoc tao"
+        log "User $APP_USER đã được tạo"
     else
-        log "User $APP_USER da ton tai"
+        log "User $APP_USER đã tồn tại"
     fi
 }
 
-# Clone va build ung dung
+# Clone và build ứng dụng
 deploy_application() {
-    log "Trien khai ung dung..."
+    log "Triển khai ứng dụng..."
     
-    # Tao thu muc ung dung
+    # Tạo thư mục ứng dụng
     sudo mkdir -p $APP_DIR
     sudo chown $APP_USER:$APP_USER $APP_DIR
     
-    # Clone source code tu GitHub hoac copy tu local
+    # Clone source code từ GitHub hoặc copy từ local
     if [[ -n "${GITHUB_REPO:-}" ]]; then
-        log "Clone source code tu GitHub repository: $GITHUB_REPO"
+        log "Clone source code từ GitHub repository: $GITHUB_REPO"
         sudo -u $APP_USER git clone $GITHUB_REPO $APP_DIR
         if [[ $? -ne 0 ]]; then
-            error "Khong the clone repository tu GitHub. Vui long kiem tra URL va quyen truy cap."
+            error "Không thể clone repository từ GitHub. Vui lòng kiểm tra URL và quyền truy cập."
         fi
     elif [[ -f "package.json" ]]; then
-        log "Copy source code tu thu muc hien tai..."
+        log "Copy source code từ thư mục hiện tại..."
         sudo cp -r . $APP_DIR/
         sudo chown -R $APP_USER:$APP_USER $APP_DIR
     else
-        error "Khong tim thay package.json va khong co GITHUB_REPO. Vui long chay script tu thu muc source code hoac cung cap GitHub repository."
+        error "Không tìm thấy package.json và không có GITHUB_REPO. Vui lòng chạy script từ thư mục source code hoặc cung cấp GitHub repository."
     fi
     
-    # Cau hinh Git cho user app
+    # Cấu hình Git cho user app
     sudo -u $APP_USER bash -c "
         git config --global user.name 'Chat System Deployment'
         git config --global user.email 'deploy@$DOMAIN'
         git config --global init.defaultBranch main
     "
     
-    # Chuyen sang user app de build
+    # Chuyển sang user app để build
     sudo -u $APP_USER bash -c "
         cd $APP_DIR
         
-        # Cai dat dependencies
+        # Cài đặt dependencies
         npm install
         
-        # Build ung dung
+        # Build ứng dụng
         npm run build
         
-        # Tao thu muc logs
+        # Tạo thư mục logs
         mkdir -p logs
     "
     
-    log "Ung dung da duoc build thanh cong"
+    log "Ứng dụng đã được build thành công"
 }
 
-# Tao file environment
+# Tạo file environment
 create_env_file() {
-    log "Tao file cau hinh environment..."
+    log "Tạo file cấu hình environment..."
     
-    # Tao DATABASE_URL
+    # Tạo DATABASE_URL
     DATABASE_URL="postgresql://$DB_USER:$DB_PASSWORD@localhost:5432/$DB_NAME"
     
-    # Tao file .env
+    # Tạo file .env
     sudo -u $APP_USER bash -c "cat > $APP_DIR/.env << EOF
 NODE_ENV=production
 PORT=3000
@@ -276,26 +276,26 @@ DATABASE_URL=$DATABASE_URL
 SESSION_SECRET=$SESSION_SECRET
 EOF"
     
-    log "File .env da duoc tao"
+    log "File .env đã được tạo"
 }
 
 # Push database schema
 setup_database_schema() {
-    log "Thiet lap schema database..."
+    log "Thiết lập schema database..."
     
     sudo -u $APP_USER bash -c "
         cd $APP_DIR
         npm run db:push
     "
     
-    log "Database schema da duoc thiet lap"
+    log "Database schema đã được thiết lập"
 }
 
-# Cau hinh PM2
+# Cấu hình PM2
 configure_pm2() {
-    log "Cau hinh PM2..."
+    log "Cấu hình PM2..."
     
-    # Start ung dung voi PM2
+    # Start ứng dụng với PM2
     sudo -u $APP_USER bash -c "
         cd $APP_DIR
         pm2 start ecosystem.config.js --env production
@@ -303,17 +303,17 @@ configure_pm2() {
         pm2 startup
     "
     
-    # Cau hinh PM2 startup cho system
+    # Cấu hình PM2 startup cho system
     sudo env PATH=\$PATH:/usr/bin /home/$APP_USER/.npm-global/bin/pm2 startup systemd -u $APP_USER --hp /home/$APP_USER
     
-    log "PM2 da duoc cau hinh"
+    log "PM2 đã được cấu hình"
 }
 
-# Cau hinh Nginx
+# Cấu hình Nginx
 configure_nginx() {
-    log "Cau hinh Nginx..."
+    log "Cấu hình Nginx..."
     
-    # Tao file cau hinh site
+    # Tạo file cấu hình site
     sudo tee /etc/nginx/sites-available/$APP_NAME << EOF
 upstream chatapp {
     server 127.0.0.1:3000;
@@ -331,7 +331,7 @@ server {
     listen 443 ssl http2;
     server_name $DOMAIN www.$DOMAIN;
     
-    # SSL configuration (se duoc cap nhat boi Certbot)
+    # SSL configuration (sẽ được cập nhật bởi Certbot)
     ssl_certificate /etc/letsencrypt/live/$DOMAIN/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/$DOMAIN/privkey.pem;
     
@@ -411,33 +411,33 @@ EOF
     sudo ln -sf /etc/nginx/sites-available/$APP_NAME /etc/nginx/sites-enabled/
     sudo rm -f /etc/nginx/sites-enabled/default
     
-    # Test cau hinh
+    # Test cấu hình
     sudo nginx -t
     
-    log "Nginx da duoc cau hinh"
+    log "Nginx đã được cấu hình"
 }
 
-# Cai dat SSL voi Let's Encrypt
+# Cài đặt SSL với Let's Encrypt
 install_ssl() {
-    log "Cai dat SSL certificate..."
+    log "Cài đặt SSL certificate..."
     
-    # Cai dat Certbot
+    # Cài đặt Certbot
     sudo apt install -y certbot python3-certbot-nginx
     
-    # Tam thoi tat SSL trong cau hinh Nginx de co the lay certificate
+    # Tạm thời tắt SSL trong cấu hình Nginx để có thể lấy certificate
     sudo sed -i '/ssl_certificate/d' /etc/nginx/sites-available/$APP_NAME
     sudo sed -i 's/listen 443 ssl http2;/listen 443;/' /etc/nginx/sites-available/$APP_NAME
     sudo systemctl reload nginx
     
-    # Lay certificate
+    # Lấy certificate
     sudo certbot --nginx -d $DOMAIN -d www.$DOMAIN --email $SSL_EMAIL --agree-tos --non-interactive --redirect
     
-    log "SSL certificate da duoc cai dat"
+    log "SSL certificate đã được cài đặt"
 }
 
-# Cau hinh firewall
+# Cấu hình firewall
 configure_firewall() {
-    log "Cau hinh firewall..."
+    log "Cấu hình firewall..."
     
     sudo ufw --force enable
     sudo ufw allow ssh
@@ -445,12 +445,12 @@ configure_firewall() {
     sudo ufw allow 80
     sudo ufw allow 443
     
-    log "Firewall da duoc cau hinh"
+    log "Firewall đã được cấu hình"
 }
 
-# Tao script backup database
+# Tạo script backup database
 create_backup_script() {
-    log "Tao script backup database..."
+    log "Tạo script backup database..."
     
     sudo tee /usr/local/bin/backup-chatapp-db.sh << EOF
 #!/bin/bash
@@ -463,7 +463,7 @@ mkdir -p \$BACKUP_DIR
 sudo -u postgres pg_dump $DB_NAME > \$BACKUP_FILE
 gzip \$BACKUP_FILE
 
-# Xoa backup cu hon 7 ngay
+# Xóa backup cũ hơn 7 ngày
 find \$BACKUP_DIR -name "*.sql.gz" -mtime +7 -delete
 
 echo "Database backup completed: \$BACKUP_FILE.gz"
@@ -471,15 +471,15 @@ EOF
     
     sudo chmod +x /usr/local/bin/backup-chatapp-db.sh
     
-    # Tao cron job backup hang ngay
+    # Tạo cron job backup hàng ngày
     (crontab -l 2>/dev/null; echo "0 2 * * * /usr/local/bin/backup-chatapp-db.sh") | crontab -
     
-    log "Script backup da duoc tao"
+    log "Script backup đã được tạo"
 }
 
-# Tao script restart ung dung
+# Tạo script restart ứng dụng
 create_restart_script() {
-    log "Tao script quan ly ung dung..."
+    log "Tạo script quản lý ứng dụng..."
     
     sudo tee /usr/local/bin/chatapp-control.sh << EOF
 #!/bin/bash
@@ -528,14 +528,14 @@ EOF
     
     sudo chmod +x /usr/local/bin/chatapp-control.sh
     
-    log "Script quan ly ung dung da duoc tao"
+    log "Script quản lý ứng dụng đã được tạo"
 }
 
-# Tao user admin mac dinh
+# Tạo user admin mặc định
 create_admin_user() {
-    log "Tao user admin mac dinh..."
+    log "Tạo user admin mặc định..."
     
-    # Tao script tao admin user
+    # Tạo script tạo admin user
     sudo -u $APP_USER tee $APP_DIR/create-admin.js << 'EOF'
 const { drizzle } = require('drizzle-orm/node-postgres');
 const { Pool } = require('pg');
@@ -585,74 +585,74 @@ async function createAdmin() {
 createAdmin();
 EOF
     
-    # Chay script tao admin
+    # Chạy script tạo admin
     sudo -u $APP_USER bash -c "cd $APP_DIR && node create-admin.js"
     
-    # Xoa script sau khi su dung
+    # Xóa script sau khi sử dụng
     sudo rm $APP_DIR/create-admin.js
     
-    log "User admin da duoc tao"
+    log "User admin đã được tạo"
 }
 
-# Kiem tra trang thai dich vu
+# Kiểm tra trạng thái dịch vụ
 check_services() {
-    log "Kiem tra trang thai cac dich vu..."
+    log "Kiểm tra trạng thái các dịch vụ..."
     
-    # Kiem tra PostgreSQL
+    # Kiểm tra PostgreSQL
     if sudo systemctl is-active --quiet postgresql; then
-        echo -e "${GREEN}✓ PostgreSQL dang hoat dong${NC}"
+        echo -e "${GREEN}✓ PostgreSQL đang hoạt động${NC}"
     else
-        echo -e "${RED}✗ PostgreSQL khong hoat dong${NC}"
+        echo -e "${RED}✗ PostgreSQL không hoạt động${NC}"
     fi
     
-    # Kiem tra Nginx
+    # Kiểm tra Nginx
     if sudo systemctl is-active --quiet nginx; then
-        echo -e "${GREEN}✓ Nginx dang hoat dong${NC}"
+        echo -e "${GREEN}✓ Nginx đang hoạt động${NC}"
     else
-        echo -e "${RED}✗ Nginx khong hoat dong${NC}"
+        echo -e "${RED}✗ Nginx không hoạt động${NC}"
     fi
     
-    # Kiem tra ung dung
+    # Kiểm tra ứng dụng
     if sudo -u $APP_USER bash -c "cd $APP_DIR && pm2 list | grep -q online"; then
-        echo -e "${GREEN}✓ Ung dung Chat dang hoat dong${NC}"
+        echo -e "${GREEN}✓ Ứng dụng Chat đang hoạt động${NC}"
     else
-        echo -e "${RED}✗ Ung dung Chat khong hoat dong${NC}"
+        echo -e "${RED}✗ Ứng dụng Chat không hoạt động${NC}"
     fi
     
-    # Test ket noi HTTP
+    # Test kết nối HTTP
     if curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 | grep -q "200\|301\|302"; then
-        echo -e "${GREEN}✓ Ung dung phan hoi HTTP${NC}"
+        echo -e "${GREEN}✓ Ứng dụng phản hồi HTTP${NC}"
     else
-        echo -e "${RED}✗ Ung dung khong phan hoi HTTP${NC}"
+        echo -e "${RED}✗ Ứng dụng không phản hồi HTTP${NC}"
     fi
 }
 
-# Hien thi thong tin hoan thanh
+# Hiển thị thông tin hoàn thành
 show_completion_info() {
-    echo -e "\n${GREEN}==================== TRIEN KHAI HOAN THANH ====================${NC}"
-    echo -e "${GREEN}✓ He thong Real-time Chat da duoc trien khai thanh cong!${NC}\n"
+    echo -e "\n${GREEN}==================== TRIỂN KHAI HOÀN THÀNH ====================${NC}"
+    echo -e "${GREEN}✓ Hệ thống Real-time Chat đã được triển khai thành công!${NC}\n"
     
-    echo -e "${BLUE}Thong tin truy cap:${NC}"
+    echo -e "${BLUE}Thông tin truy cập:${NC}"
     echo -e "  • Website: https://$DOMAIN"
-    echo -e "  • Admin Panel: https://$DOMAIN (dang nhap voi admin/admin123)"
+    echo -e "  • Admin Panel: https://$DOMAIN (đăng nhập với admin/admin123)"
     echo -e "  • Widget JS: https://$DOMAIN/widget.js"
     echo -e "  • Widget CSS: https://$DOMAIN/widget.css"
     
-    echo -e "\n${BLUE}Thong tin dang nhap admin mac dinh:${NC}"
+    echo -e "\n${BLUE}Thông tin đăng nhập admin mặc định:${NC}"
     echo -e "  • Username: admin"
     echo -e "  • Password: admin123"
-    echo -e "  • ${YELLOW}⚠️  Vui long doi mat khau sau khi dang nhap lan dau${NC}"
+    echo -e "  • ${YELLOW}⚠️  Vui lòng đổi mật khẩu sau khi đăng nhập lần đầu${NC}"
     
-    echo -e "\n${BLUE}Lenh quan ly he thong:${NC}"
-    echo -e "  • Khoi dong: sudo /usr/local/bin/chatapp-control.sh start"
-    echo -e "  • Dung: sudo /usr/local/bin/chatapp-control.sh stop"
+    echo -e "\n${BLUE}Lệnh quản lý hệ thống:${NC}"
+    echo -e "  • Khởi động: sudo /usr/local/bin/chatapp-control.sh start"
+    echo -e "  • Dừng: sudo /usr/local/bin/chatapp-control.sh stop"
     echo -e "  • Restart: sudo /usr/local/bin/chatapp-control.sh restart"
-    echo -e "  • Xem trang thai: sudo /usr/local/bin/chatapp-control.sh status"
+    echo -e "  • Xem trạng thái: sudo /usr/local/bin/chatapp-control.sh status"
     echo -e "  • Xem logs: sudo /usr/local/bin/chatapp-control.sh logs"
-    echo -e "  • Cap nhat: sudo /usr/local/bin/chatapp-control.sh update"
+    echo -e "  • Cập nhật: sudo /usr/local/bin/chatapp-control.sh update"
     
-    echo -e "\n${BLUE}Tich hop Widget vao website:${NC}"
-    echo -e "  Them code sau vao trang web cua ban:"
+    echo -e "\n${BLUE}Tích hợp Widget vào website:${NC}"
+    echo -e "  Thêm code sau vào trang web của bạn:"
     echo -e "${YELLOW}  <link rel=\"stylesheet\" href=\"https://$DOMAIN/widget.css\">"
     echo -e "  <script src=\"https://$DOMAIN/widget.js\"></script>"
     echo -e "  <script>"
@@ -660,40 +660,40 @@ show_completion_info() {
     echo -e "      domain: '$DOMAIN',"
     echo -e "      position: 'bottom-right',"
     echo -e "      primaryColor: '#007bff',"
-    echo -e "      title: 'Ho tro khach hang'"
+    echo -e "      title: 'Hỗ trợ khách hàng'"
     echo -e "    };"
     echo -e "  </script>${NC}"
     
-    echo -e "\n${BLUE}Thu muc va file quan trong:${NC}"
-    echo -e "  • Ung dung: $APP_DIR"
+    echo -e "\n${BLUE}Thư mục và file quan trọng:${NC}"
+    echo -e "  • Ứng dụng: $APP_DIR"
     echo -e "  • Logs: $APP_DIR/logs/"
     echo -e "  • Backup: /home/$APP_USER/backups/"
     echo -e "  • Nginx config: /etc/nginx/sites-available/$APP_NAME"
     echo -e "  • SSL certificates: /etc/letsencrypt/live/$DOMAIN/"
     
-    echo -e "\n${GREEN}==================== TRIEN KHAI THANH CONG ====================${NC}"
+    echo -e "\n${GREEN}==================== TRIỂN KHAI THÀNH CÔNG ====================${NC}"
 }
 
-# Ham main
+# Hàm main
 main() {
     echo -e "${BLUE}"
     echo "============================================================================"
-    echo "    REAL-TIME CHAT SYSTEM - SCRIPT TRIEN KHAI TU DONG"
-    echo "    Phien ban: 1.0"
-    echo "    He dieu hanh: Ubuntu 20.04 LTS"
+    echo "    REAL-TIME CHAT SYSTEM - SCRIPT TRIỂN KHAI TỰ ĐỘNG"
+    echo "    Phiên bản: 1.0"
+    echo "    Hệ điều hành: Ubuntu 20.04 LTS"
     echo "============================================================================"
     echo -e "${NC}"
     
-    # Kiem tra dieu kien
+    # Kiểm tra điều kiện
     check_root
     check_os
     
-    # Thu thap thong tin
+    # Thu thập thông tin
     gather_info
     
-    echo -e "\n${BLUE}Bat dau qua trinh trien khai...${NC}"
+    echo -e "\n${BLUE}Bắt đầu quá trình triển khai...${NC}"
     
-    # Thuc hien cac buoc trien khai
+    # Thực hiện các bước triển khai
     update_system
     install_nodejs
     install_postgresql
@@ -711,17 +711,17 @@ main() {
     create_restart_script
     create_admin_user
     
-    # Restart cac dich vu
+    # Restart các dịch vụ
     sudo systemctl restart nginx
     sudo -u $APP_USER bash -c "cd $APP_DIR && pm2 restart all"
     
-    # Kiem tra trang thai
+    # Kiểm tra trạng thái
     sleep 5
     check_services
     
-    # Hien thi thong tin hoan thanh
+    # Hiển thị thông tin hoàn thành
     show_completion_info
 }
 
-# Chay script
+# Chạy script
 main "$@"

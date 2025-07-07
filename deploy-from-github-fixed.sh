@@ -2,7 +2,7 @@
 
 # ==============================================================================
 # REAL-TIME CHAT SYSTEM - DEPLOY TRUC TIEP TU GITHUB
-# Deploy nhanh tu GitHub repository
+# Deploy nhanh tu GitHub repository - FIXED VERSION
 # ==============================================================================
 
 set -e  # Dung script khi co loi

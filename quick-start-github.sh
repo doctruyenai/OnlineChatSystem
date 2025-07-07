@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # ==============================================================================
-# QUICK START - DEPLOY TỪ GITHUB
-# Hướng dẫn nhanh deploy từ GitHub repository
+# QUICK START - DEPLOY TU GITHUB
+# Huong dan nhanh deploy tu GitHub repository
 # ==============================================================================
 
-# Màu sắc
+# Mau sac
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -14,46 +14,46 @@ NC='\033[0m'
 
 echo -e "${BLUE}"
 echo "============================================================================"
-echo "              DEPLOY REAL-TIME CHAT SYSTEM TỪ GITHUB"
-echo "                         HƯỚNG DẪN NHANH"
+echo "              DEPLOY REAL-TIME CHAT SYSTEM TU GITHUB"
+echo "                         HUONG DAN NHANH"
 echo "============================================================================"
 echo -e "${NC}"
 
-echo -e "\n${GREEN}🚀 DEPLOY NHANH NHẤT (1 LỆNH):${NC}"
+echo -e "\n${GREEN}🚀 DEPLOY NHANH NHAT (1 LENH):${NC}"
 echo -e "${YELLOW}curl -sSL https://raw.githubusercontent.com/doctruyenai/OnlineChatSystem/main/deploy-from-github.sh | bash${NC}"
 
-echo -e "\n${GREEN}📋 CHUẨN BỊ TRƯỚC KHI CHẠY:${NC}"
-echo "✅ VPS Ubuntu 20.04+ với quyền sudo"
-echo "✅ Domain đã trỏ về IP VPS (quan trọng!)"
+echo -e "\n${GREEN}📋 CHUAN BI TRUOC KHI CHAY:${NC}"
+echo "✅ VPS Ubuntu 20.04+ voi quyen sudo"
+echo "✅ Domain da tro ve IP VPS (quan trong!)"
 echo "✅ Email cho SSL certificate"
-echo "✅ Database password mạnh (12+ ký tự)"
-echo "✅ Session secret (32+ ký tự ngẫu nhiên)"
+echo "✅ Database password manh (12+ ky tu)"
+echo "✅ Session secret (32+ ky tu ngau nhien)"
 
-echo -e "\n${GREEN}⚡ QUY TRÌNH TỰ ĐỘNG:${NC}"
-echo "1. Clone code từ GitHub: https://github.com/doctruyenai/OnlineChatSystem"
-echo "2. Cài đặt Node.js, PostgreSQL, Nginx, PM2"
-echo "3. Build và deploy ứng dụng"
-echo "4. Cấu hình SSL certificate tự động"
-echo "5. Thiết lập firewall và backup"
+echo -e "\n${GREEN}⚡ QUY TRINH TU DONG:${NC}"
+echo "1. Clone code tu GitHub: https://github.com/doctruyenai/OnlineChatSystem"
+echo "2. Cai dat Node.js, PostgreSQL, Nginx, PM2"
+echo "3. Build va deploy ung dung"
+echo "4. Cau hinh SSL certificate tu dong"
+echo "5. Thiet lap firewall va backup"
 
-echo -e "\n${GREEN}🎯 KẾT QUẢ SAU DEPLOY:${NC}"
+echo -e "\n${GREEN}🎯 KET QUA SAU DEPLOY:${NC}"
 echo "• Website: https://yourdomain.com"
 echo "• Admin Panel: https://yourdomain.com/auth"
-echo "• Login: admin/admin123 (ĐỔI NGAY!)"
-echo "• Widget sẵn sàng tích hợp"
+echo "• Login: admin/admin123 (DOI NGAY!)"
+echo "• Widget san sang tich hop"
 
-echo -e "\n${GREEN}🔄 UPDATE SAU NÀY:${NC}"
+echo -e "\n${GREEN}🔄 UPDATE SAU NAY:${NC}"
 echo -e "${YELLOW}sudo /usr/local/bin/chatapp-control.sh update${NC}"
 
-echo -e "\n${GREEN}📚 TÀI LIỆU HƯỚNG DẪN:${NC}"
-echo "• HUONG_DAN_DEPLOY_TU_GITHUB.md - Chi tiết deploy từ GitHub"
-echo "• HUONG_DAN_SU_DUNG_DEPLOY.md - Hướng dẫn đầy đủ"
-echo "• SUMMARY_DEPLOYMENT.md - Tóm tắt toàn bộ"
+echo -e "\n${GREEN}📚 TAI LIEU HUONG DAN:${NC}"
+echo "• HUONG_DAN_DEPLOY_TU_GITHUB.md - Chi tiet deploy tu GitHub"
+echo "• HUONG_DAN_SU_DUNG_DEPLOY.md - Huong dan day du"
+echo "• SUMMARY_DEPLOYMENT.md - Tom tat toan bo"
 
 echo -e "\n${BLUE}============================================================================${NC}"
-echo -e "${GREEN}SẴN SÀNG DEPLOY? COPY VÀ PASTE LỆNH SAU:${NC}"
+echo -e "${GREEN}SAN SANG DEPLOY? COPY VA PASTE LENH SAU:${NC}"
 echo ""
 echo -e "${YELLOW}curl -sSL https://raw.githubusercontent.com/doctruyenai/OnlineChatSystem/main/deploy-from-github.sh | bash${NC}"
 echo ""
-echo -e "${BLUE}Thời gian deploy: 25-35 phút${NC}"
+echo -e "${BLUE}Thoi gian deploy: 25-35 phut${NC}"
 echo -e "${BLUE}============================================================================${NC}"

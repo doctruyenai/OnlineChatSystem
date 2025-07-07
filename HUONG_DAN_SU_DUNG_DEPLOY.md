@@ -1,124 +1,124 @@
-# Hướng Dẫn Sử Dụng Script Deploy All-in-One
+# Huong Dan Su Dung Script Deploy All-in-One
 
-## Tổng Quan
+## Tong Quan
 
-Script `deploy-all-in-one.sh` là công cụ tự động hóa hoàn toàn việc triển khai hệ thống Real-time Chat System lên VPS Ubuntu 20.04. Script này sẽ tự động cài đặt và cấu hình tất cả các thành phần cần thiết.
+Script `deploy-all-in-one.sh` la cong cu tu dong hoa hoan toan viec trien khai he thong Real-time Chat System len VPS Ubuntu 20.04. Script nay se tu dong cai dat va cau hinh tat ca cac thanh phan can thiet.
 
-## Yêu Cầu Hệ Thống
+## Yeu Cau He Thong
 
 ### VPS Requirements
-- **Hệ điều hành**: Ubuntu 20.04 LTS
-- **RAM**: Tối thiểu 2GB (khuyến nghị 4GB+)
-- **CPU**: Tối thiểu 1 core (khuyến nghị 2+ cores)
-- **Ổ cứng**: Tối thiểu 20GB SSD
-- **Kết nối**: Quyền sudo và kết nối internet ổn định
+- **He dieu hanh**: Ubuntu 20.04 LTS
+- **RAM**: Toi thieu 2GB (khuyen nghi 4GB+)
+- **CPU**: Toi thieu 1 core (khuyen nghi 2+ cores)
+- **O cung**: Toi thieu 20GB SSD
+- **Ket noi**: Quyen sudo va ket noi internet on dinh
 
-### Thông Tin Cần Chuẩn Bị
-- **Domain name** đã trỏ về IP VPS (ví dụ: `chat.example.com`)
-- **Email address** để đăng ký SSL certificate
-- **Database password** (mạnh, ít nhất 12 ký tự)
-- **Session secret** (ít nhất 32 ký tự ngẫu nhiên)
+### Thong Tin Can Chuan Bi
+- **Domain name** da tro ve IP VPS (vi du: `chat.example.com`)
+- **Email address** de dang ky SSL certificate
+- **Database password** (manh, it nhat 12 ky tu)
+- **Session secret** (it nhat 32 ky tu ngau nhien)
 
-## Hướng Dẫn Từng Bước
+## Huong Dan Tung Buoc
 
-### Bước 1: Chuẩn Bị Files
+### Buoc 1: Chuan Bi Files
 ```bash
-# Upload tất cả files lên VPS
+# Upload tat ca files len VPS
 scp -r . user@your-vps-ip:/home/user/chat-deployment/
 ssh user@your-vps-ip
 cd chat-deployment
 ```
 
-### Bước 2: Cấp Quyền Thực Thi
+### Buoc 2: Cap Quyen Thuc Thi
 ```bash
-# Chạy setup script để cấp quyền
+# Chay setup script de cap quyen
 ./setup-deployment.sh
 ```
 
-### Bước 3: Kiểm Tra Yêu Cầu Hệ Thống
+### Buoc 3: Kiem Tra Yeu Cau He Thong
 ```bash
-# Kiểm tra VPS có đủ yêu cầu không
+# Kiem tra VPS co du yeu cau khong
 ./check-requirements.sh
 ```
 
-**Kết quả mong đợi:**
-- ✓ Hệ điều hành Ubuntu 20.04
+**Ket qua mong doi:**
+- ✓ He dieu hanh Ubuntu 20.04
 - ✓ RAM >= 2GB
-- ✓ Ổ cứng còn >= 10GB
-- ✓ Quyền sudo
-- ✓ Kết nối internet
+- ✓ O cung con >= 10GB
+- ✓ Quyen sudo
+- ✓ Ket noi internet
 
-### Bước 4: (Tùy Chọn) Tùy Chỉnh Cấu Hình
+### Buoc 4: (Tuy Chon) Tuy Chinh Cau Hinh
 ```bash
-# Xem cấu hình hiện tại
+# Xem cau hinh hien tai
 ./deployment.config.sh show
 
-# Chỉnh sửa cấu hình nếu cần
+# Chinh sua cau hinh neu can
 nano deployment.config.sh
 
-# Kiểm tra cấu hình sau khi chỉnh sửa
+# Kiem tra cau hinh sau khi chinh sua
 ./deployment.config.sh validate
 ```
 
-### Bước 5: Chạy Deploy Script
+### Buoc 5: Chay Deploy Script
 ```bash
-# Chạy script triển khai chính
+# Chay script trien khai chinh
 ./deploy-all-in-one.sh
 ```
 
-## Quá Trình Triển Khai
+## Qua Trinh Trien Khai
 
-### Giai Đoạn 1: Thu Thập Thông Tin
-Script sẽ hỏi bạn:
+### Giai Doan 1: Thu Thap Thong Tin
+Script se hoi ban:
 
 1. **Domain name**:
    ```
-   Nhập domain name (ví dụ: example.com): chat.yoursite.com
+   Nhap domain name (vi du: example.com): chat.yoursite.com
    ```
 
 2. **Email cho SSL**:
    ```
-   Nhập email cho SSL certificate: admin@yoursite.com
+   Nhap email cho SSL certificate: admin@yoursite.com
    ```
 
 3. **Database password**:
    ```
-   Nhập mật khẩu cho database PostgreSQL: [nhập password mạnh]
+   Nhap mat khau cho database PostgreSQL: [nhap password manh]
    ```
 
 4. **Session secret**:
    ```
-   Nhập session secret (ít nhất 32 ký tự): [nhập chuỗi ngẫu nhiên dài]
+   Nhap session secret (it nhat 32 ky tu): [nhap chuoi ngau nhien dai]
    ```
 
-### Giai Đoạn 2: Cài Đặt Tự Động
-Script sẽ tự động thực hiện:
+### Giai Doan 2: Cai Dat Tu Dong
+Script se tu dong thuc hien:
 
-1. **Cập nhật hệ thống** (5-10 phút)
-2. **Cài đặt Node.js 20.x** (2-3 phút)
-3. **Cài đặt PostgreSQL 14** (3-5 phút)
-4. **Cài đặt Nginx** (1-2 phút)
-5. **Cài đặt PM2** (1 phút)
-6. **Tạo user và database** (1 phút)
-7. **Deploy ứng dụng** (5-10 phút)
-8. **Cấu hình SSL certificate** (2-3 phút)
-9. **Thiết lập firewall** (1 phút)
-10. **Cấu hình backup tự động** (1 phút)
+1. **Cap nhat he thong** (5-10 phut)
+2. **Cai dat Node.js 20.x** (2-3 phut)
+3. **Cai dat PostgreSQL 14** (3-5 phut)
+4. **Cai dat Nginx** (1-2 phut)
+5. **Cai dat PM2** (1 phut)
+6. **Tao user va database** (1 phut)
+7. **Deploy ung dung** (5-10 phut)
+8. **Cau hinh SSL certificate** (2-3 phut)
+9. **Thiet lap firewall** (1 phut)
+10. **Cau hinh backup tu dong** (1 phut)
 
-**Tổng thời gian**: 20-35 phút
+**Tong thoi gian**: 20-35 phut
 
-### Giai Đoạn 3: Xác Nhận Thành Công
-Sau khi hoàn thành, bạn sẽ thấy:
+### Giai Doan 3: Xac Nhan Thanh Cong
+Sau khi hoan thanh, ban se thay:
 ```
 ============================================================================
-    TRIỂN KHAI THÀNH CÔNG!
+    TRIEN KHAI THANH CONG!
 ============================================================================
 
-🎉 Hệ thống đã được triển khai thành công tại:
+🎉 He thong da duoc trien khai thanh cong tai:
    Website: https://chat.yoursite.com
    Admin Panel: https://chat.yoursite.com/auth
 
-🔐 Thông tin đăng nhập mặc định:
+🔐 Thong tin dang nhap mac dinh:
    Username: admin
    Password: admin123
 
@@ -126,64 +126,64 @@ Sau khi hoàn thành, bạn sẽ thấy:
    Script: https://chat.yoursite.com/widget.js
    Style: https://chat.yoursite.com/widget.css
 
-🛠️ Scripts quản lý:
-   Kiểm tra status: sudo systemctl status chatapp
+🛠️ Scripts quan ly:
+   Kiem tra status: sudo systemctl status chatapp
    Xem logs: pm2 logs chatapp
    Restart: pm2 restart chatapp
    Backup DB: /usr/local/bin/backup-chatapp-db.sh
 ```
 
-## Xử Lý Lỗi Thường Gặp
+## Xu Ly Loi Thuong Gap
 
-### Lỗi Domain Chưa Trỏ Đúng
+### Loi Domain Chua Tro Dung
 ```
-ERROR: Domain chưa trỏ về IP server này
+ERROR: Domain chua tro ve IP server nay
 ```
-**Giải pháp**: Kiểm tra DNS record A của domain trỏ về IP VPS
+**Giai phap**: Kiem tra DNS record A cua domain tro ve IP VPS
 
-### Lỗi Quyền Sudo
+### Loi Quyen Sudo
 ```
-ERROR: User không có quyền sudo
+ERROR: User khong co quyen sudo
 ```
-**Giải pháp**: 
+**Giai phap**: 
 ```bash
 su - root
 usermod -aG sudo your-username
 ```
 
-### Lỗi Port Đã Được Sử Dụng
+### Loi Port Da Duoc Su Dung
 ```
-ERROR: Port 80/443 đang được sử dụng
+ERROR: Port 80/443 dang duoc su dung
 ```
-**Giải pháp**:
+**Giai phap**:
 ```bash
-sudo systemctl stop apache2  # Nếu có Apache
+sudo systemctl stop apache2  # Neu co Apache
 sudo systemctl disable apache2
 ```
 
-### Lỗi SSL Certificate
+### Loi SSL Certificate
 ```
-ERROR: Không thể tạo SSL certificate
+ERROR: Khong the tao SSL certificate
 ```
-**Giải pháp**: 
-- Kiểm tra domain đã trỏ đúng IP
-- Đợi 5-10 phút để DNS propagate
-- Chạy lại: `sudo certbot --nginx -d yourdomain.com`
+**Giai phap**: 
+- Kiem tra domain da tro dung IP
+- Doi 5-10 phut de DNS propagate
+- Chay lai: `sudo certbot --nginx -d yourdomain.com`
 
 ## Sau Khi Deploy
 
-### Đăng Nhập Hệ Thống
-1. Truy cập `https://yourdomain.com/auth`
-2. Đăng nhập với `admin/admin123`
-3. **Đổi mật khẩu ngay lập tức**
+### Dang Nhap He Thong
+1. Truy cap `https://yourdomain.com/auth`
+2. Dang nhap voi `admin/admin123`
+3. **Doi mat khau ngay lap tuc**
 
-### Tích Hợp Widget
-Thêm vào website khách hàng:
+### Tich Hop Widget
+Them vao website khach hang:
 ```html
 <script>
 window.LiveChatConfig = {
-  title: 'Hỗ Trợ Khách Hàng',
-  subtitle: 'Chúng tôi sẵn sàng hỗ trợ bạn',
+  title: 'Ho Tro Khach Hang',
+  subtitle: 'Chung toi san sang ho tro ban',
   primaryColor: '#3b82f6',
   position: 'bottom-right'
 };
@@ -192,15 +192,15 @@ window.LiveChatConfig = {
 <link rel="stylesheet" href="https://yourdomain.com/widget.css">
 ```
 
-### Scripts Quản Lý Hữu Ích
+### Scripts Quan Ly Huu Ich
 ```bash
-# Kiểm tra trạng thái các dịch vụ
+# Kiem tra trang thai cac dich vu
 sudo systemctl status nginx postgresql pm2-chatapp
 
-# Xem logs ứng dụng
+# Xem logs ung dung
 pm2 logs chatapp
 
-# Restart ứng dụng
+# Restart ung dung
 pm2 restart chatapp
 
 # Backup database
@@ -209,27 +209,27 @@ pm2 restart chatapp
 # Restore database
 /usr/local/bin/restore-chatapp-db.sh backup-file.sql
 
-# Kiểm tra tình trạng SSL
+# Kiem tra tinh trang SSL
 sudo certbot certificates
 ```
 
-### Monitoring và Bảo Trì
-- **Backup tự động**: Chạy hàng ngày lúc 2:00 AM
-- **Log rotation**: Tự động cleanup logs cũ
-- **SSL renewal**: Tự động gia hạn SSL certificate
-- **Security updates**: Kiểm tra và update định kỳ
+### Monitoring va Bao Tri
+- **Backup tu dong**: Chay hang ngay luc 2:00 AM
+- **Log rotation**: Tu dong cleanup logs cu
+- **SSL renewal**: Tu dong gia han SSL certificate
+- **Security updates**: Kiem tra va update dinh ky
 
-## Liên Hệ Hỗ Trợ
+## Lien He Ho Tro
 
-Nếu gặp vấn đề trong quá trình deploy:
-1. Kiểm tra logs: `sudo journalctl -u nginx -f`
-2. Kiểm tra PM2: `pm2 logs`
+Neu gap van de trong qua trinh deploy:
+1. Kiem tra logs: `sudo journalctl -u nginx -f`
+2. Kiem tra PM2: `pm2 logs`
 3. Xem file log deploy: `tail -f deploy.log`
 
-## Lưu Ý An Toàn
+## Luu Y An Toan
 
-- **Đổi mật khẩu mặc định** ngay sau khi deploy
-- **Backup thường xuyên** dữ liệu quan trọng
-- **Update hệ thống** định kỳ
-- **Monitor logs** để phát hiện bất thường
-- **Không chia sẻ** thông tin database và session secret
+- **Doi mat khau mac dinh** ngay sau khi deploy
+- **Backup thuong xuyen** du lieu quan trong
+- **Update he thong** dinh ky
+- **Monitor logs** de phat hien bat thuong
+- **Khong chia se** thong tin database va session secret

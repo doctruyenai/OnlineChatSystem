@@ -1,153 +1,153 @@
-# Hướng Dẫn Deploy Trực Tiếp Từ GitHub
+# Huong Dan Deploy Truc Tiep Tu GitHub
 
-## 🚀 Deploy Nhanh Từ GitHub (1 Lệnh)
+## 🚀 Deploy Nhanh Tu GitHub (1 Lenh)
 
-Bạn có thể deploy trực tiếp từ GitHub repository mà không cần download code về máy:
+Ban co the deploy truc tiep tu GitHub repository ma khong can download code ve may:
 
 ```bash
-# Tải và chạy script deploy từ GitHub
+# Tai va chay script deploy tu GitHub
 curl -sSL https://raw.githubusercontent.com/doctruyenai/OnlineChatSystem/main/deploy-from-github.sh | bash
 ```
 
-**HOẶC**
+**HOAC**
 
 ```bash
-# Tải script trước, sau đó chạy
+# Tai script truoc, sau do chay
 wget https://raw.githubusercontent.com/doctruyenai/OnlineChatSystem/main/deploy-from-github.sh
 chmod +x deploy-from-github.sh
 ./deploy-from-github.sh
 ```
 
-## 📋 Cách Hoạt Động
+## 📋 Cach Hoat Dong
 
-Script `deploy-from-github.sh` sẽ:
+Script `deploy-from-github.sh` se:
 
-1. **Tự động clone** code từ GitHub repository của bạn
-2. **Chạy script deploy** chính (`deploy-all-in-one.sh`)
-3. **Tự động cleanup** sau khi hoàn thành
+1. **Tu dong clone** code tu GitHub repository cua ban
+2. **Chay script deploy** chinh (`deploy-all-in-one.sh`)
+3. **Tu dong cleanup** sau khi hoan thanh
 
-## 🔧 Repository Mặc Định
+## 🔧 Repository Mac Dinh
 
-Script được cấu hình sẵn với repository:
+Script duoc cau hinh san voi repository:
 ```
 https://github.com/doctruyenai/OnlineChatSystem
 ```
 
-Bạn có thể thay đổi trong quá trình deploy hoặc sửa trong script.
+Ban co the thay doi trong qua trinh deploy hoac sua trong script.
 
-## ✅ Yêu Cầu
+## ✅ Yeu Cau
 
-- **VPS Ubuntu 20.04+** với quyền sudo
-- **Kết nối internet** để clone từ GitHub
-- **Domain** đã trỏ về IP VPS
-- **Thông tin cần thiết**:
+- **VPS Ubuntu 20.04+** voi quyen sudo
+- **Ket noi internet** de clone tu GitHub
+- **Domain** da tro ve IP VPS
+- **Thong tin can thiet**:
   - Email cho SSL certificate
   - Database password
   - Session secret
 
-## ⚡ Quy Trình Deploy
+## ⚡ Quy Trinh Deploy
 
-### Bước 1: Chạy Script
+### Buoc 1: Chay Script
 ```bash
 curl -sSL https://raw.githubusercontent.com/doctruyenai/OnlineChatSystem/main/deploy-from-github.sh | bash
 ```
 
-### Bước 2: Nhập Thông Tin
-Script sẽ hỏi:
-- GitHub repository URL (có thể để trống dùng mặc định)
+### Buoc 2: Nhap Thong Tin
+Script se hoi:
+- GitHub repository URL (co the de trong dung mac dinh)
 - Domain name
 - Email cho SSL
 - Database password
 - Session secret
 
-### Bước 3: Chờ Deploy Hoàn Thành
-- Thời gian: 25-35 phút
-- Tự động cài đặt tất cả dependencies
-- Tự động cấu hình SSL và firewall
+### Buoc 3: Cho Deploy Hoan Thanh
+- Thoi gian: 25-35 phut
+- Tu dong cai dat tat ca dependencies
+- Tu dong cau hinh SSL va firewall
 
-## 🎯 Kết Quả
+## 🎯 Ket Qua
 
 Sau khi deploy xong:
 - **Website**: `https://yourdomain.com`
 - **Admin**: `https://yourdomain.com/auth`
-- **Login**: `admin/admin123` ⚠️ **ĐỔI NGAY!**
+- **Login**: `admin/admin123` ⚠️ **DOI NGAY!**
 
-## 🔄 Update Hệ Thống
+## 🔄 Update He Thong
 
-Để update từ GitHub sau khi đã deploy:
+De update tu GitHub sau khi da deploy:
 
 ```bash
-# Sử dụng script quản lý có sẵn
+# Su dung script quan ly co san
 sudo /usr/local/bin/chatapp-control.sh update
 ```
 
-Script này sẽ:
-1. Dừng ứng dụng
-2. Pull code mới từ GitHub
-3. Cài đặt dependencies mới
-4. Build lại ứng dụng
+Script nay se:
+1. Dung ung dung
+2. Pull code moi tu GitHub
+3. Cai dat dependencies moi
+4. Build lai ung dung
 5. Update database schema
-6. Khởi động lại ứng dụng
+6. Khoi dong lai ung dung
 
-## 🛠️ Scripts Có Sẵn Sau Deploy
+## 🛠️ Scripts Co San Sau Deploy
 
 ```bash
-# Quản lý ứng dụng
+# Quan ly ung dung
 sudo /usr/local/bin/chatapp-control.sh start|stop|restart|status|logs|update
 
 # Backup database
 sudo /usr/local/bin/backup-chatapp-db.sh
 
-# Kiểm tra status
+# Kiem tra status
 sudo systemctl status nginx postgresql
 pm2 status
 ```
 
-## 📚 So Sánh Các Phương Pháp Deploy
+## 📚 So Sanh Cac Phuong Phap Deploy
 
-| Phương Pháp | Ưu Điểm | Nhược Điểm | Thời Gian |
+| Phuong Phap | Uu Diem | Nhuoc Diem | Thoi Gian |
 |-------------|---------|------------|-----------|
-| **Deploy từ GitHub** | Không cần download code, luôn mới nhất | Cần internet trong quá trình deploy | 25-35 phút |
-| **Deploy từ local** | Có thể customize code trước | Phải download/upload code | 20-30 phút |
+| **Deploy tu GitHub** | Khong can download code, luon moi nhat | Can internet trong qua trinh deploy | 25-35 phut |
+| **Deploy tu local** | Co the customize code truoc | Phai download/upload code | 20-30 phut |
 
-## 🔒 Bảo Mật
+## 🔒 Bao Mat
 
-- Script chỉ clone từ repository public
-- Không lưu trữ credentials
-- Tự động cleanup thư mục tạm
-- Sử dụng HTTPS cho clone
+- Script chi clone tu repository public
+- Khong luu tru credentials
+- Tu dong cleanup thu muc tam
+- Su dung HTTPS cho clone
 
 ## ❓ Troubleshooting
 
-### Repository không clone được
+### Repository khong clone duoc
 ```bash
-# Kiểm tra kết nối internet
+# Kiem tra ket noi internet
 ping github.com
 
-# Kiểm tra Git
+# Kiem tra Git
 git --version
 ```
 
-### Script không tìm thấy
-Đảm bảo repository có files:
+### Script khong tim thay
+Dam bao repository co files:
 - `deploy-all-in-one.sh`
 - `package.json`
-- Các script khác cần thiết
+- Cac script khac can thiet
 
 ### Deploy fail
 ```bash
 # Xem logs
 tail -f /tmp/deploy.log
 
-# Kiểm tra VPS requirements
+# Kiem tra VPS requirements
 ./check-requirements.sh
 ```
 
-## 🚀 Lệnh Deploy Nhanh Nhất
+## 🚀 Lenh Deploy Nhanh Nhat
 
 ```bash
-# One-liner deploy từ GitHub
+# One-liner deploy tu GitHub
 curl -sSL https://raw.githubusercontent.com/doctruyenai/OnlineChatSystem/main/deploy-from-github.sh | bash
 ```
 
-Chỉ cần 1 lệnh và cung cấp thông tin khi được hỏi!
+Chi can 1 lenh va cung cap thong tin khi duoc hoi!
