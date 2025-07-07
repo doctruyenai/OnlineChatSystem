@@ -4,10 +4,65 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { User } from "@shared/schema";
+import { Link, useLocation } from "wouter";
+import { MessageCircle, Settings, LogOut, BarChart3 } from "lucide-react";
 
 interface SidebarProps {
   user: User;
   isConnected: boolean;
+}
+
+function NavigationMenu({ user }: { user: User }) {
+  const [location] = useLocation();
+
+  const menuItems = [
+    { 
+      path: "/", 
+      label: "Conversations", 
+      icon: MessageCircle, 
+      count: 3 
+    },
+    { 
+      path: "/widget-config", 
+      label: "Widget Config", 
+      icon: Settings 
+    },
+    { 
+      path: "/analytics", 
+      label: "Analytics", 
+      icon: BarChart3 
+    },
+  ];
+
+  return (
+    <ul className="space-y-2">
+      {menuItems.map((item) => {
+        const isActive = location === item.path;
+        const IconComponent = item.icon;
+        
+        return (
+          <li key={item.path}>
+            <Link 
+              href={item.path}
+              className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                isActive 
+                  ? 'bg-primary-50 text-primary-700' 
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+              }`}
+            >
+              <IconComponent className="mr-3 h-4 w-4" />
+              {item.label}
+              {item.count && (
+                <span className="ml-auto bg-primary-100 text-primary-800 text-xs px-2 py-1 rounded-full">
+                  {item.count}
+                </span>
+              )}
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
 }
 
 export default function Sidebar({ user, isConnected }: SidebarProps) {
@@ -52,29 +107,7 @@ export default function Sidebar({ user, isConnected }: SidebarProps) {
 
       {/* Navigation */}
       <nav className="p-4 flex-1">
-        <ul className="space-y-2">
-          <li>
-            <a href="#" className="flex items-center px-3 py-2 text-sm font-medium bg-primary-50 text-primary-700 rounded-lg">
-              <i className="fas fa-comments mr-3"></i>
-              Conversations
-              <span className="ml-auto bg-primary-100 text-primary-800 text-xs px-2 py-1 rounded-full">
-                3
-              </span>
-            </a>
-          </li>
-          <li>
-            <a href="#" className="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg">
-              <i className="fas fa-chart-bar mr-3"></i>
-              Analytics
-            </a>
-          </li>
-          <li>
-            <a href="#" className="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg">
-              <i className="fas fa-cog mr-3"></i>
-              Settings
-            </a>
-          </li>
-        </ul>
+        <NavigationMenu user={user} />
       </nav>
 
       {/* Status Toggle & Logout */}

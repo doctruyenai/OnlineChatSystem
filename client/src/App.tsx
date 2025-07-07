@@ -9,6 +9,7 @@ import { ProtectedRoute } from "./lib/protected-route";
 import Dashboard from "@/pages/dashboard";
 import AuthPage from "@/pages/auth-page";
 import WidgetDemo from "@/pages/widget-demo";
+import WidgetConfig from "@/pages/widget-config";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -17,6 +18,7 @@ function Router() {
       <ProtectedRoute path="/" component={() => <Dashboard />} />
       <Route path="/auth" component={() => <AuthPage />} />
       <Route path="/widget-demo" component={() => <WidgetDemo />} />
+      <ProtectedRoute path="/widget-config" component={() => <WidgetConfig />} />
       <Route component={() => <NotFound />} />
     </Switch>
   );

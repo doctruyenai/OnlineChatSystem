@@ -18,7 +18,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     if (!req.isAuthenticated()) return res.sendStatus(401);
     
     try {
-      const conversations = await storage.getConversationsByAgent(req.user!.id);
+      // Get all active conversations (not just assigned to this agent)
+      const conversations = await storage.getActiveConversations();
       res.json(conversations);
     } catch (error) {
       console.error("Error fetching conversations:", error);
