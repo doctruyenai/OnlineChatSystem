@@ -1,6 +1,13 @@
 # TÓM TẮT HƯỚNG DẪN DEPLOYMENT
 
-## 🚀 3 Lệnh Nhanh để Deploy
+## 🚀 Deploy Nhanh Nhất (Từ GitHub)
+
+```bash
+# Deploy trực tiếp từ GitHub repository (1 lệnh)
+curl -sSL https://raw.githubusercontent.com/doctruyenai/OnlineChatSystem/main/deploy-from-github.sh | bash
+```
+
+## 📋 Hoặc Deploy Từ Local
 
 ```bash
 # Bước 1: Kiểm tra files
@@ -31,8 +38,15 @@
 - [ ] Database password mạnh (ít nhất 12 ký tự)
 - [ ] Session secret (ít nhất 32 ký tự ngẫu nhiên)
 
-## 🔥 Deploy Nhanh (Cho Người Vội)
+## 🔥 2 Phương Pháp Deploy
 
+### 🌟 Phương Pháp 1: Deploy Từ GitHub (Khuyến Nghị)
+```bash
+# Chỉ cần 1 lệnh trên VPS
+curl -sSL https://raw.githubusercontent.com/doctruyenai/OnlineChatSystem/main/deploy-from-github.sh | bash
+```
+
+### 📁 Phương Pháp 2: Deploy Từ Local
 ```bash
 # Upload files lên VPS
 scp -r . user@vps-ip:/home/user/chat-system/
@@ -47,11 +61,13 @@ chmod +x *.sh && ./deploy-all-in-one.sh
 
 | File | Mục Đích |
 |------|----------|
+| `deploy-from-github.sh` | **Deploy trực tiếp từ GitHub** |
+| `deploy-all-in-one.sh` | Script deploy chính |
 | `quick-deploy-guide.sh` | Hướng dẫn 5 bước nhanh |
 | `HUONG_DAN_SU_DUNG_DEPLOY.md` | Hướng dẫn chi tiết đầy đủ |
+| `HUONG_DAN_DEPLOY_TU_GITHUB.md` | **Hướng dẫn deploy từ GitHub** |
 | `check-deploy-files.sh` | Kiểm tra files đầy đủ |
 | `check-requirements.sh` | Kiểm tra VPS đủ yêu cầu |
-| `deploy-all-in-one.sh` | Script deploy chính |
 | `deployment.config.sh` | Cấu hình có thể tùy chỉnh |
 
 ## ⚡ Quá Trình Deploy

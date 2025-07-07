@@ -71,6 +71,20 @@ check_os() {
 gather_info() {
     echo -e "${BLUE}==================== CẤU HÌNH TRIỂN KHAI ====================${NC}"
     
+    # GitHub Repository (tùy chọn)
+    if [[ -z "${GITHUB_REPO:-}" ]]; then
+        echo -e "\n${YELLOW}GitHub Repository (tùy chọn):${NC}"
+        echo "Nếu bạn muốn deploy từ GitHub repository, nhập URL:"
+        echo "Ví dụ: https://github.com/doctruyenai/OnlineChatSystem"
+        read -p "GitHub Repository URL (để trống nếu dùng code local): " GITHUB_REPO
+        
+        if [[ -n "$GITHUB_REPO" ]]; then
+            log "Sẽ clone code từ: $GITHUB_REPO"
+        else
+            log "Sẽ sử dụng code từ thư mục hiện tại"
+        fi
+    fi
+    
     # Domain name
     read -p "Nhập domain name (ví dụ: example.com): " DOMAIN
     while [[ -z "$DOMAIN" ]]; do
@@ -208,14 +222,27 @@ deploy_application() {
     sudo mkdir -p $APP_DIR
     sudo chown $APP_USER:$APP_USER $APP_DIR
     
-    # Copy source code (giả sử script chạy từ thư mục source)
-    if [[ -f "package.json" ]]; then
+    # Clone source code từ GitHub hoặc copy từ local
+    if [[ -n "${GITHUB_REPO:-}" ]]; then
+        log "Clone source code từ GitHub repository: $GITHUB_REPO"
+        sudo -u $APP_USER git clone $GITHUB_REPO $APP_DIR
+        if [[ $? -ne 0 ]]; then
+            error "Không thể clone repository từ GitHub. Vui lòng kiểm tra URL và quyền truy cập."
+        fi
+    elif [[ -f "package.json" ]]; then
         log "Copy source code từ thư mục hiện tại..."
         sudo cp -r . $APP_DIR/
         sudo chown -R $APP_USER:$APP_USER $APP_DIR
     else
-        error "Không tìm thấy package.json. Vui lòng chạy script từ thư mục source code."
+        error "Không tìm thấy package.json và không có GITHUB_REPO. Vui lòng chạy script từ thư mục source code hoặc cung cấp GitHub repository."
     fi
+    
+    # Cấu hình Git cho user app
+    sudo -u $APP_USER bash -c "
+        git config --global user.name 'Chat System Deployment'
+        git config --global user.email 'deploy@$DOMAIN'
+        git config --global init.defaultBranch main
+    "
     
     # Chuyển sang user app để build
     sudo -u $APP_USER bash -c "
